@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "valtu"
+version = "0.1.0"
+description = "Valtu Wallet SDK for Python: signed API client, webhook verification, enclave attestation checks."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+authors = [{ name = "Valtu", email = "hello@valtu.io" }]
+keywords = ["valtu", "wallet", "custody", "crypto", "payments", "stablecoin", "usdt", "usdc", "webhooks", "sdk"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Office/Business :: Financial",
+  "Typing :: Typed",
+]
+dependencies = ["cryptography>=41"]
+
+[project.urls]
+Homepage = "https://valtu.io/docs/wallet-kit"
+Documentation = "https://valtu.io/docs/api"
+Source = "https://github.com/Valtu-Wallet/valtu-python"
+Issues = "https://github.com/Valtu-Wallet/valtu-python/issues"
+Changelog = "https://valtu.io/docs/changelog"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/valtu", "tests", "README.md", "LICENSE", "pyproject.toml"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/valtu"]

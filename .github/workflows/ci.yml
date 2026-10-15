@@ -1,0 +1,39 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        cryptography: ["latest"]
+        include:
+          # The oldest version pyproject.toml allows.
+          - python: "3.9"
+            cryptography: "41.0.0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install .
+      - if: matrix.cryptography != 'latest'
+        run: pip install "cryptography==${{ matrix.cryptography }}"
+      # Run against the installed package, not the source tree.
+      - run: cd tests && python -m unittest discover -s . -t . -v
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check --strict dist/*
